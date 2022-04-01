@@ -35,12 +35,20 @@ public class AtendimentoDTO {
 		return id_a;
 	}
 	
+	public Boolean getRelacionado_com_pandemia(){
+		return this.relacionadoComPandemia;
+	}
+	
+	public Boolean getSem_possibilidade_contagio() {
+		return this.semPossibilidadeContagio;
+	}
+	
 	public List<EtapaDTO> getEtapas(){
-		return etapas;
+		return this.etapas;
 		}
 	
 	public List<TesteDTO> getTestes(){
-		return testes;
+		return this.testes;
 		}
 	
 	public String getDescricao() {
@@ -88,6 +96,10 @@ public class AtendimentoDTO {
 	
 	public static Stream<AtendimentoDTO> converter(List<Atendimento> lista){
 		return lista.stream().map(AtendimentoDTO::new);
+	}
+	
+	public static List<AtendimentoDTO> converterLista(List<Atendimento> lista){
+		return lista.stream().map(AtendimentoDTO::new).collect(Collectors.toList());
 	}
 	
 }

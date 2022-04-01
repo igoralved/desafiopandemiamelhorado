@@ -42,5 +42,10 @@ public class EtapaDTO {
 	public void print() {
 		System.out.println(toString());
 	}
+
+	public static List<EtapaDTO> converterLista(List<Etapa> etapas) {
+		// TODO Auto-generated method stub
+		return etapas.stream().map(EtapaDTO::new).collect(Collectors.toList());
+	}
 	
 }

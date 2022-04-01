@@ -22,7 +22,7 @@ public class TesteDTO {
 		return id_t;
 	}
 	
-	public int getNumero() {
+	public Integer getNumero() {
 		return numero;
 	}
 	

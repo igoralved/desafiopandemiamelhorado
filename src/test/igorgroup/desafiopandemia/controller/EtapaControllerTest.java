@@ -61,12 +61,14 @@ public class EtapaControllerTest {
 	public void testaListaComMock() {
 		//etapa 1
 		Etapa e1 = new Etapa();
+		e1.setId(1L);
 		e1.setNumero(1);
 		e1.setDescricao("Bem bom");
 		
 		//etapa 2
 		
 		Etapa e2 = new Etapa();
+		e2.setId(2L);
 		e2.setNumero(2);
 		e2.setDescricao("Tudo certo");
 		
@@ -86,6 +88,7 @@ public class EtapaControllerTest {
 	public void testaEtapaUnicaComMock() {
 		//etapa 1
 		Etapa e = new Etapa();
+		e.setId(1L);
 		e.setNumero(1);
 		e.setDescricao("Bem bom");
 		

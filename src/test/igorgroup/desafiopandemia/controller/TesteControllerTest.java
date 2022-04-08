@@ -22,8 +22,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
-
+import igorgroup.desafiopandemia.model.Etapa;
 import igorgroup.desafiopandemia.model.Teste;
 import igorgroup.desafiopandemia.repository.TesteRepository;
 
@@ -95,6 +94,87 @@ public class TesteControllerTest {
 		Assertions.assertThat(result.getStatusCodeValue()).isEqualTo(200);
 	}
 	
+	@Test
+	public void testaDetalheComMockFracasso() {
+		//etapa 1
+		Teste t = new Teste();
+		t.setId(1L);
+		t.setNumero(1);
+		t.setResultado("Bem bom");
+			
+		Optional<Teste> to = Optional.of(t);
+				
+		BDDMockito.when(tr.findById(t.getId())).thenReturn(to);
+				
+		ResponseEntity<Teste> result = restTemplate.getForEntity("/testes/detalhar/{id}", Teste.class, 2L);
+				
+		Assertions.assertThat(result.getStatusCodeValue()).isEqualTo(404);
+	}
+	
+	@Test
+	public void testaCadastro() {
+		Teste t = new Teste();
+		t.setId(1L);
+		t.setNumero(1);
+		t.setResultado("Impressionante");
+		
+		Optional<Teste> to = Optional.of(t);
+		
+		BDDMockito.when(tr.save(t)).thenReturn(t);
+		
+		ResponseEntity<Teste> result = restTemplate.postForEntity("/testes/cadastrar", t, Teste.class);
+	
+		Assertions.assertThat(result.getStatusCodeValue()).isEqualTo(201);
+	}
+	
+	@Test
+	public void testaAtualizacao() {
+		Teste t = new Teste();
+		t.setId(1L);
+		t.setNumero(1);
+		t.setResultado("Perfeito");
+		
+		Optional<Teste> to = Optional.of(t);
+		
+		BDDMockito.when(tr.findById(t.getId())).thenReturn(to);
+	
+		Assertions.assertThat(to).isPresent();
+		
+	}
+	
+	@Test
+	public void testaAtualizacaoComFracasso() {
+		
+		Optional<Teste> to = tr.findById(200L);
+		
+		BDDMockito.when(tr.findById(200L)).thenReturn(to);
+	
+		Assertions.assertThat(to).isEmpty();
+		
+	}
+	
+	@Test
+	public void testaRemocao() {
+		Teste t = new Teste();
+		t.setId(200L);
+		t.setNumero(1);
+		t.setResultado("Muito bom");
+		
+		//System.out.println("Remocao antes " + er.findById(e.getId()).get().getId());
+		
+		tr.save(t);
+		
+		BDDMockito.when(tr.findById(t.getId())).thenReturn(Optional.of(t));
+		
+		Assertions.assertThat(tr.findById(t.getId())).isPresent();
+		
+		tr.deleteById(t.getId());
+		
+		BDDMockito.when(tr.findById(t.getId())).thenReturn(Optional.empty());
+		
+		Assertions.assertThat(tr.findById(t.getId())).isEmpty();
+		
+	}
 	
 	
 

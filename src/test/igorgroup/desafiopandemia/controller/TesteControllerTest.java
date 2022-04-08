@@ -118,7 +118,6 @@ public class TesteControllerTest {
 		t.setNumero(1);
 		t.setResultado("Impressionante");
 		
-		Optional<Teste> to = Optional.of(t);
 		
 		BDDMockito.when(tr.save(t)).thenReturn(t);
 		
@@ -138,6 +137,16 @@ public class TesteControllerTest {
 		
 		BDDMockito.when(tr.findById(t.getId())).thenReturn(to);
 	
+		Assertions.assertThat(to).isPresent();
+		
+		t.setId(2L);
+		t.setNumero(2);
+		t.setResultado("Muito bom");
+		
+		tr.save(t);
+		
+		BDDMockito.when(tr.findById(t.getId())).thenReturn(to);
+		
 		Assertions.assertThat(to).isPresent();
 		
 	}

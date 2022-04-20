@@ -59,24 +59,14 @@ public class EtapaRepositoryTest {
 	
 	@Test
 	public void testaUpdate() {
-		//etapa 1
-		Etapa etapa1 = new Etapa();
-		etapa1.setNumero(1);
-		etapa1.setDescricao("Iniciando");
 		
-		//etapa 2
-		Etapa etapa2 = new Etapa();
-		etapa2.setNumero(2);
-		etapa2.setDescricao("No meio");
-		
+		Etapa etapa1 = this.repository.findById(1L).get();
+		etapa1.setId(2L);
+		etapa1.setNumero(2);
+		etapa1.setDescricao("No meio");
 		this.repository.save(etapa1);
 		
-		etapa1.setNumero(etapa2.getNumero());
-		etapa1.setDescricao(etapa2.getDescricao());
-		this.repository.save(etapa1);
-	
-		etapa1 = this.repository.findById(etapa1.getId());
-		
+		assertThat(etapa1.getId()).isEqualTo(2L);
 		assertThat(etapa1.getNumero()).isEqualTo(2);
 		assertThat(etapa1.getDescricao()).isEqualTo("No meio");
 		
@@ -85,12 +75,8 @@ public class EtapaRepositoryTest {
 	@Test
 	public void testaDelete() {
 		//etapa 1
-		Etapa etapa1 = new Etapa();
-		etapa1.setNumero(1);
-		etapa1.setDescricao("Iniciando");
-		
-		this.repository.save(etapa1);
-		repository.delete(etapa1);
+		Etapa etapa1 = repository.findById(1L).get();
+		repository.deleteById(1L);
 		
 		assertThat(repository.findById(etapa1.getId())).isEmpty();
 	}

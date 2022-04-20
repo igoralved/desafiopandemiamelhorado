@@ -3,6 +3,8 @@ package igorgroup.desafiopandemia.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.assertj.core.api.Assertions;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,57 +32,49 @@ public class TesteRepositoryTest {
 		Teste teste1 = new Teste();
 		teste1.setNumero(1);
 		teste1.setResultado("Ok");
-		this.repository.save(teste1);
+		this.repository.saveAndFlush(teste1);
 		
 		//teste 2
 		Teste teste2 = new Teste();
 		teste2.setNumero(2);
 		teste2.setResultado("Bom");
-		this.repository.save(teste2);
+		this.repository.saveAndFlush(teste2);
 		
 		//asserções
 		//teste 1
-		assertThat(teste1.getId()).isNotNull();
-		assertThat(teste1.getNumero()).isEqualTo(1);
-		assertThat(teste1.getResultado()).isEqualTo("Ok");
+		assertThat(repository.findById(teste1.getId()).get().getId()).isNotNull();
+		assertThat(repository.findById(teste1.getId()).get().getNumero()).isEqualTo(1);
+		assertThat(repository.findById(teste1.getId()).get().getResultado()).isEqualTo("Ok");
 		//teste 2
-		assertThat(teste2.getId()).isNotNull();
-		assertThat(teste2.getNumero()).isEqualTo(2);
-		assertThat(teste2.getResultado()).isEqualTo("Bom");
+		assertThat(repository.findById(teste2.getId()).get().getId()).isNotNull();
+		assertThat(repository.findById(teste2.getId()).get().getNumero()).isEqualTo(2);
+		assertThat(repository.findById(teste2.getId()).get().getResultado()).isEqualTo("Bom");
 	}
 	
 	@Test
 	public void testaUpdate() {
 		//teste 1
-		Teste teste1 = new Teste();
+		Teste teste1 = repository.findById(1L).get();
 		teste1.setNumero(1);
 		teste1.setResultado("Ok");
 				
 		//teste 2
-		Teste teste2 = new Teste();
-		teste2.setNumero(2);
-		teste2.setResultado("Ótimo");
+		//Teste teste2 = new Teste();
+		//teste2.setNumero(2);
+		//teste2.setResultado("Ótimo");
 	
-		this.repository.save(teste1);
-	
-		teste1.setNumero(teste2.getNumero());
-		teste1.setResultado(teste2.getResultado());
-		this.repository.save(teste1);
+		this.repository.saveAndFlush(teste1);
 		
-		teste1 = this.repository.findById(teste1.getId()).get();
-		
-		
+		assertThat(repository.findById(teste1.getId()).get().getNumero()).isEqualTo(1);
+		assertThat(repository.findById(teste1.getId()).get().getResultado()).isEqualTo("Ok");
 	}
 	
 	@Test
 	public void testaDelete() {
 		//teste 1
-		Teste teste1 = new Teste();
-		teste1.setNumero(1);
-		teste1.setResultado("Ok");
-		this.repository.save(teste1);
-		repository.delete(teste1);
-		assertThat(repository.findById(teste1.getId())).isEmpty();
+		ArrayList<Teste> testes = (ArrayList<Teste>) repository.findAll();
+		repository.deleteInBatch(testes);
+		assertThat(repository.findAll()).isEmpty();
 	}
 
 }

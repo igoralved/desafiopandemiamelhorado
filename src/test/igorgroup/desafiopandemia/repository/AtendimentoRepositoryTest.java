@@ -3,6 +3,8 @@ package igorgroup.desafiopandemia.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -30,14 +32,14 @@ public class AtendimentoRepositoryTest {
 		a1.setRelacionado_com_pandemia(true);
 		a1.setSem_possibilidade_contagio(false);
 		a1.setTempoAtendimento(4);
-		this.repository.save(a1);
+		this.repository.saveAndFlush(a1);
 		
 		//asserções
-		assertThat(a1.getId()).isNotNull();
-		assertThat(a1.getDescricao()).isEqualTo("A mais famosa");
-		assertThat(a1.getRelacionado_com_pandemia()).isEqualTo(true);
-		assertThat(a1.getSem_possibilidade_contagio()).isEqualTo(false);
-		assertThat(a1.getTempoAtendimento()).isEqualTo(4);
+		assertThat(repository.findById(a1.getId()).get().getId()).isNotNull();
+		assertThat(repository.findById(a1.getId()).get().getDescricao()).isEqualTo("A mais famosa");
+		assertThat(repository.findById(a1.getId()).get().getRelacionado_com_pandemia()).isEqualTo(true);
+		assertThat(repository.findById(a1.getId()).get().getSem_possibilidade_contagio()).isEqualTo(false);
+		assertThat(repository.findById(a1.getId()).get().getTempoAtendimento()).isEqualTo(4);
 		
 	}
 	
@@ -55,32 +57,35 @@ public class AtendimentoRepositoryTest {
 		a2.setSem_possibilidade_contagio(false);
 		a2.setTempoAtendimento(8);
 		
-		this.repository.save(a1);
+		this.repository.saveAndFlush(a1);
 		a1.setDescricao(a2.getDescricao());
 		a1.setRelacionado_com_pandemia(a2.getRelacionado_com_pandemia());
 		a1.setSem_possibilidade_contagio(a2.getSem_possibilidade_contagio());
 		a1.setTempoAtendimento(a2.getTempoAtendimento());
-		this.repository.save(a1);
+		this.repository.saveAndFlush(a1);
 		
 		a1 = this.repository.findById(a1.getId()).get();
 		
 		//asserções
-		assertThat(a1.getDescricao()).isEqualTo(a2.getDescricao());
-		assertThat(a1.getRelacionado_com_pandemia()).isEqualTo(a2.getRelacionado_com_pandemia());
-		assertThat(a1.getSem_possibilidade_contagio()).isEqualTo(a2.getSem_possibilidade_contagio());
-		assertThat(a1.getTempoAtendimento()).isEqualTo(a2.getTempoAtendimento());
+		assertThat(repository.findById(a1.getId()).get().getDescricao()).isEqualTo(a2.getDescricao());
+		assertThat(repository.findById(a1.getId()).get().getRelacionado_com_pandemia()).isEqualTo(a2.getRelacionado_com_pandemia());
+		assertThat(repository.findById(a1.getId()).get().getSem_possibilidade_contagio()).isEqualTo(a2.getSem_possibilidade_contagio());
+		assertThat(repository.findById(a1.getId()).get().getTempoAtendimento()).isEqualTo(a2.getTempoAtendimento());
 	}
 	
 	@Test
 	public void testaDelete() {
 		Atendimento a1 = new Atendimento();
-		a1.setDescricao("A mais recomendada");
-		a1.setRelacionado_com_pandemia(false);
+		a1.setDescricao("A melhor da cidade");
+		a1.setRelacionado_com_pandemia(true);
 		a1.setSem_possibilidade_contagio(true);
 		a1.setTempoAtendimento(4);
-		this.repository.save(a1);
-		repository.delete(a1);
-		assertThat(this.repository.findById(id)).isEmpty();
+		a1.setEtapas(new ArrayList<>());
+		a1.setTestes(new ArrayList<>());
+		repository.saveAndFlush(a1);
+		ArrayList<Atendimento> i = (ArrayList<Atendimento>) repository.findAll();
+		repository.deleteAll(i);
+		assertThat(repository.findAll()).isEmpty();
 	}
 
 }

@@ -3,7 +3,11 @@ package igorgroup.desafiopandemia.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Stack;
+
 import org.assertj.core.api.Assertions;
+import org.dom4j.tree.SingleIterator;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -61,24 +65,23 @@ public class EtapaRepositoryTest {
 	public void testaUpdate() {
 		
 		Etapa etapa1 = this.repository.findById(1L).get();
-		etapa1.setId(2L);
+		//etapa1.setId(12L);
 		etapa1.setNumero(2);
 		etapa1.setDescricao("No meio");
-		this.repository.save(etapa1);
-		
-		assertThat(etapa1.getId()).isEqualTo(2L);
-		assertThat(etapa1.getNumero()).isEqualTo(2);
-		assertThat(etapa1.getDescricao()).isEqualTo("No meio");
+		//repository.save(etapa1);
+		repository.saveAndFlush(etapa1);
+		assertThat(repository.findById(1L).get().getId()).isEqualTo(1L);
+		assertThat(repository.findById(1L).get().getNumero()).isEqualTo(2);
+		assertThat(repository.findById(1L).get().getDescricao()).isEqualTo("No meio");
 		
 	}
 
 	@Test
 	public void testaDelete() {
 		//etapa 1
-		Etapa etapa1 = repository.findById(1L).get();
-		repository.deleteById(1L);
-		
-		assertThat(repository.findById(etapa1.getId())).isEmpty();
+		ArrayList<Etapa> i = (ArrayList<Etapa>) repository.findAll();
+		repository.deleteInBatch(i);
+		assertThat(repository.findAll()).isEmpty();
 	}
 	
 }

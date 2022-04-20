@@ -3,6 +3,8 @@ package igorgroup.desafiopandemia.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -30,46 +32,33 @@ public class UnidadeSaudeRepositoryTest {
 		UnidadeSaude u1 = new UnidadeSaude();
 		u1.setNome("Cardiologia");
 		u1.setNumeroPacientes(20);
-		this.repository.save(u1);
+		this.repository.saveAndFlush(u1);
 		
-		//asserções
-		assertThat(u1.getId()).isNotNull();
-		assertThat(u1.getNome()).isEqualTo("Cardiologia");
-		assertThat(u1.getNumeroPacientes()).isEqualTo(20);
+		//asserçõe
+		assertThat(repository.findById(u1.getId()).get().getId()).isNotNull();
+		assertThat(repository.findById(u1.getId()).get().getNome()).isEqualTo("Cardiologia");
+		assertThat(repository.findById(u1.getId()).get().getNumeroPacientes()).isEqualTo(20);
 	}
 	
 	
 	@Test
 	public void testaUpdate() {
-		UnidadeSaude u1 = new UnidadeSaude();
-		u1.setNome("Moinhos");
-		u1.setNumeroPacientes(30);
-		
-		UnidadeSaude u2 = new UnidadeSaude();
-		u2.setNome("Clínicas");
-		u2.setNumeroPacientes(25);
-		
-		this.repository.save(u1);
-		u1.setNome(u2.getNome());
-		u1.setNumeroPacientes(u2.getNumeroPacientes());
-		
-		this.repository.save(u1);
-		u1 = this.repository.findById(u1.getId()).get();
+		UnidadeSaude u1 = repository.findById(1L).get();
+		u1.setNome("CLINICAS");
+		u1.setNumeroPacientes(12);
+		this.repository.saveAndFlush(u1);
 		
 		//asserções
-		assertThat(u1.getNome()).isEqualTo(u2.getNome());
-		assertThat(u1.getNumeroPacientes()).isEqualTo(u2.getNumeroPacientes());
+		assertThat(repository.findById(u1.getId()).get().getNome()).isEqualTo(u1.getNome());
+		assertThat(repository.findById(u1.getId()).get().getNumeroPacientes()).isEqualTo(u1.getNumeroPacientes());
 		
 	}
 	
 	@Test
 	public void testaDelete() {
-		UnidadeSaude u1 = new UnidadeSaude();
-		u1.setNome("Moinhos");
-		u1.setNumeroPacientes(30);
-		this.repository.save(u1);
-		repository.delete(u1);
-		assertThat(this.repository.findById(u1.getId())).isEmpty();
+		ArrayList<UnidadeSaude> unidades = (ArrayList<UnidadeSaude>) repository.findAll();
+		repository.deleteAll(unidades);
+		assertThat(this.repository.findAll()).isEmpty();
 	}
 
 }

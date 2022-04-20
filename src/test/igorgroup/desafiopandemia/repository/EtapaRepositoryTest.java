@@ -34,31 +34,31 @@ public class EtapaRepositoryTest {
 		Etapa etapa1 = new Etapa();
 		etapa1.setNumero(1);
 		etapa1.setDescricao("Iniciando");
-		this.repository.save(etapa1);
+		this.repository.saveAndFlush(etapa1);
 		//etapa 2
 		Etapa etapa2 = new Etapa();
 		etapa2.setNumero(2);
 		etapa2.setDescricao("No meio");
-		this.repository.save(etapa2);
+		this.repository.saveAndFlush(etapa2);
 		//etapa 3
 		Etapa etapa3 = new Etapa();
 		etapa3.setNumero(3);
 		etapa3.setDescricao("No fim");
-		this.repository.save(etapa3);
+		this.repository.saveAndFlush(etapa3);
 		
 		//asserções
 		//etapa 1
-		assertThat(etapa1.getId()).isNotNull();
-		assertThat(etapa1.getNumero()).isEqualTo(1);
-		assertThat(etapa1.getDescricao()).isEqualTo("Iniciando");
+		assertThat(repository.findById(etapa1.getId())).isNotNull();
+		assertThat(repository.findById(etapa1.getId()).get().getNumero()).isEqualTo(1);
+		assertThat(repository.findById(etapa1.getId()).get().getDescricao()).isEqualTo("Iniciando");
 		//etapa 2
-		assertThat(etapa2.getId()).isNotNull();
-		assertThat(etapa2.getNumero()).isEqualTo(2);
-		assertThat(etapa2.getDescricao()).isEqualTo("No meio");
+		assertThat(repository.findById(etapa2.getId())).isNotNull();
+		assertThat(repository.findById(etapa2.getId()).get().getNumero()).isEqualTo(2);
+		assertThat(repository.findById(etapa2.getId()).get().getDescricao()).isEqualTo("No meio");
 		//etapa 3
-		assertThat(etapa3.getId()).isNotNull();
-		assertThat(etapa3.getNumero()).isEqualTo(3);
-		assertThat(etapa3.getDescricao()).isEqualTo("No fim");
+		assertThat(repository.findById(etapa3.getId())).isNotNull();
+		assertThat(repository.findById(etapa3.getId()).get().getNumero()).isEqualTo(3);
+		assertThat(repository.findById(etapa3.getId()).get().getDescricao()).isEqualTo("No fim");
 	}
 	
 	@Test

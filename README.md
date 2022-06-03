@@ -20,8 +20,12 @@ inicial e tempo de atendimento.
 5.Controllers (Controladores):
   Cada controlador tem seu repositório. Quando ele recebe uma requisição, ele devolve uma entidade de resposta (Response Entity).
   Métodos de requisição:
+  
   *GET:Lista todas as instâncias registradas no repositório do controlador ou a que corresponde ao ID passado por parâmetro na requisição. Para mostrar por ID,
   avisa que
+  
   *POST: Cadastra uma instância no repositório se ela for válida. Caso não seja, retorna uma mensagem de erro.
+  
   *PUT:
+  
   *DELETE:

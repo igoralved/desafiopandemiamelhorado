@@ -26,6 +26,6 @@ inicial e tempo de atendimento.
   
   *POST: Cadastra uma instância no repositório se ela for válida. Caso não seja, retorna uma mensagem de erro.
   
-  *PUT:
+  *PUT: Atualiza a instância com o ID correspondente com os dados passados por parâmetro.
   
-  *DELETE:
+  *DELETE: Deleta a instância registrada com o ID correspondente ao do parâmetro, caso seja encontrada no repositório.

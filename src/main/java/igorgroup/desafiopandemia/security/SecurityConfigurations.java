@@ -1,5 +1,7 @@
 package igorgroup.desafiopandemia.security;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +15,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import igorgroup.desafiopandemia.repository.UsuarioRepository;
 import igorgroup.desafiopandemia.service.AutenticacaoService;
@@ -49,7 +54,12 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter{
 	//configurar a partir de autorização
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
-		http.authorizeRequests()
+
+		
+		////
+		
+		http
+		.authorizeRequests()
 		//etapas
 		.antMatchers(HttpMethod.GET, "/etapas/todas").permitAll()
 		.antMatchers(HttpMethod.GET, "/etapas/detalhar/{id}").permitAll()
@@ -101,11 +111,16 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter{
 	public void configure(WebSecurity web) throws Exception{
 		web.ignoring().antMatchers("/**.html","/v2/api-docs","/webjars/**","/configuration/**","/swagger-resources/**");
 	}
+	
 	/*
-	public static void main(String[] args) {
-		SecurityConfigurations s = new SecurityConfigurations();
-		System.out.println("Password: " + "123456");
-		System.out.println("Hash: " + s.passwordEncoder.encode("123456"));
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Arrays.asList("*"));
+		configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
 	}*/
 	
 }

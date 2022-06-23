@@ -59,6 +59,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter{
 		////
 		
 		http
+		.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()).and()
 		.authorizeRequests()
 		//etapas
 		.antMatchers(HttpMethod.GET, "/etapas/todas").permitAll()
@@ -112,15 +113,15 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter{
 		web.ignoring().antMatchers("/**.html","/v2/api-docs","/webjars/**","/configuration/**","/swagger-resources/**");
 	}
 	
-	/*
 	@Bean
-	CorsConfigurationSource corsConfigurationSource() {
-		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(Arrays.asList("*"));
-		configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", configuration);
-		return source;
-	}*/
+	  CorsConfigurationSource corsConfigurationSource() 
+	  {
+	    CorsConfiguration configuration = new CorsConfiguration();
+	    configuration.setAllowedOrigins(Arrays.asList("*"));
+	    configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	    source.registerCorsConfiguration("/**", configuration);
+	    return source;
+	  }
 	
 }

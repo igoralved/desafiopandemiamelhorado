@@ -60,7 +60,7 @@ public class UnidadeSaudeController {
 	@RequestMapping(value = "/todas", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<Stream<UnidadeSaudeDTO>> listarTodas(@RequestParam(value="nome", required = false) String nome
 			){
-		if(nome == null || nome.length() == 0) {
+		if(nome == null || nome.length() == 0 || nome.equals("QUALQUER")) {
 			Stream<UnidadeSaude> stream = unidadesauderepository.findAll().stream();
 			return new ResponseEntity<Stream<UnidadeSaudeDTO>>(stream.map(UnidadeSaudeDTO::new), HttpStatus.OK);
 		}Stream<UnidadeSaudeDTO> stream = unidadesauderepository.findByNome(nome).stream().map(UnidadeSaudeDTO::new);
